@@ -16,6 +16,12 @@ class Admin extends CI_Controller {
         $this->load->model('M_hasil');
         $this->load->library('form_validation');
         $this->load->helper('pm');
+
+        if ($this->session->userdata('telahLogin') == 0) {
+            
+            redirect('user/login');
+            
+        }
         
         
 
