@@ -14,8 +14,12 @@ class Admin extends CI_Controller {
         $this->load->model('M_sub_kriteria');
         $this->load->model('M_penilaian');
         $this->load->model('M_hasil');
+        $this->load->model('M_grafik');
         $this->load->library('form_validation');
         $this->load->helper('pm');
+        // $this->output->enable_profiler(ENVIRONMENT == 'development');
+
+
 
         if ($this->session->userdata('telahLogin') == 0) {
             
@@ -238,6 +242,25 @@ class Admin extends CI_Controller {
         if (!$data['alternatif']) show_404();
 
         $this->load->view('admin/penilaian_skor', $data);
+    }
+
+    public function hasil2()
+    {
+
+        $penilaian = $this->M_hasil;
+
+       $this->load->view('admin/hasil2');
+       
+    }
+    public function hasil_grafik()
+    {
+
+        $grafik = $this->M_grafik;
+
+        $data['hasil'] = $grafik->getAll();
+
+       $this->load->view('admin/hasil_grafik', $data);
+       
     }
 
     public function hasil()

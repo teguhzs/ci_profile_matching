@@ -56,7 +56,7 @@ class M_sub_kriteria extends CI_Model
         $this->db->select('*, tb_sub_kriteria.nilai_sub_kriteria as nilai_sub_kriteria, tb_sub_kriteria.keterangan as keterangan, tb_aspek.nama_aspek as nama_aspek, tb_aspek.kode_aspek as kode_aspek, tb_sub_kriteria.bobot as bobot');
         $this->db->from($this->_table);
         $this->db->join($this->_table_join, 'tb_aspek.id_aspek = tb_sub_kriteria.id_aspek');
-        $this->db->order_by('kode_aspek', 'asc');
+        $this->db->order_by('tb_aspek.id_aspek, tb_sub_kriteria.keterangan', 'asc');
         $query = $this->db->get();
         return $query->result();
     }

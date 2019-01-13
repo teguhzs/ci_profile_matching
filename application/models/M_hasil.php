@@ -76,9 +76,19 @@ class M_hasil extends CI_Model
         return $query->row();
     }
 
+    public function getAllcon()
+    {
+        $query = $this->db->query(
+                                "SELECT DISTINCT id_alternatif, 
+                                GROUP_CONCAT(skor ORDER BY id_sub_kriteria) AS penilaian_list 
+                                FROM tb_penilaian 
+                                GROUP BY id_alternatif");
+        return $query->result();
+    }
+
     public function getAll($id_alternatif)
     {
-        $this->db->select('tb_sub_kriteria.bobot as bobot, tb_sub_kriteria.nilai_sub_kriteria as nilai_sub_kriteria, tb_sub_kriteria.keterangan as keterangan, tb_penilaian.skor as skor,tb_alternatif.kode_alternatif as kode_alternatif, tb_aspek.nama_aspek as nama_aspek, tb_aspek.kode_aspek as kode_aspek,tb_sub_kriteria.kode_sub_kriteria as kode_sub_kriteria');
+        $this->db->select('tb_sub_kriteria.nama_sub_kriteria as nama_sub_kriteria, tb_sub_kriteria.bobot as bobot, tb_sub_kriteria.nilai_sub_kriteria as nilai_sub_kriteria, tb_sub_kriteria.keterangan as keterangan, tb_penilaian.skor as skor,tb_alternatif.kode_alternatif as kode_alternatif, tb_aspek.nama_aspek as nama_aspek, tb_aspek.kode_aspek as kode_aspek,tb_sub_kriteria.kode_sub_kriteria as kode_sub_kriteria');
         $this->db->from($this->_tbPenilaian);
         $this->db->join($this->_tbAlternatif, 'tb_alternatif.id_alternatif = tb_penilaian.id_alternatif');
         $this->db->join($this->_tbSubKriteria, 'tb_sub_kriteria.id_sub_kriteria = tb_penilaian.id_sub_kriteria');

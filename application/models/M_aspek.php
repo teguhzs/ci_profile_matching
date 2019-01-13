@@ -39,7 +39,7 @@ class M_aspek extends CI_Model
     public function getAll()
     {
         $this->db->from($this->_table);
-        $this->db->order_by("kode_aspek", "asc");
+        $this->db->order_by("id_aspek", "asc");
         $query = $this->db->get(); 
         return $query->result();
     }

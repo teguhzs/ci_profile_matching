@@ -44,7 +44,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<!-- ========== -->
 				<?php $this->load->view('admin/tabel_n.php'); ?>
 				<!-- ========== -->
+				<?php $this->load->view('admin/tabel_nf.php'); ?>
+				<!-- ========== -->
 				<?php $this->load->view('admin/tabel_akhir.php'); ?>
+
+				
+				<a href="<?php echo base_url('admin/hasil_grafik') ?>" class="btn btn-success"><i class="fas fa-chart-bar"></i> Lihat Ranking & Grafik</a>
 									
 									</div>
 			

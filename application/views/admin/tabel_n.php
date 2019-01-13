@@ -1,394 +1,195 @@
-<div class="col-md-6">
-	<div class="card mb-3">
-		<div class="card-header">
-			<i class="fas fa-table"></i>
-			Pengelompokan CF dan SF (NCF & SCF)
-		</div>
-
-		<div class="card-body">
-
-			<div class="table-responsive">
-
-				<table class="table table-bordered table-sm table-responsive">
-					<thead class="thead-inverse">
-						<tr class='bg-primary text-light'>
-							<th class="">Kode Alternatif</th>
-							<th class="" colspan='2'>Lokasi</th>
-							<th class="" colspan='2'>Transportasi</th>
-							<th class="" colspan='2'>Infrastruktur</th>
-							<th class="" colspan='2'>Jarak</th>
-						</tr>
-						<tr class='bg-light'>
-							<th></th>
-							<th>AK</th>
-							<th>AJ</th>
-							<th>BMM</th>
-							<th>BT</th>
-							<th>TP</th>
-							<th>KDJP</th>
-							<th>JL</th>
-							<th>JT</th>
-
-						</tr>
-						<tr class='bg-light'>
-							<th></th>
-							<th>CF</th>
-							<th>SF</th>
-							<th>CF</th>
-							<th>SF</th>
-							<th>CF</th>
-							<th>SF</th>
-							<th>SF</th>
-							<th>CF</th>
-
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>A1</td>
-							<?php foreach ($penilaian_A1 as $tampil_penilaian) { ?>
-							<td scope="row">
-								<?php 
-												$gap = $tampil_penilaian->skor - $tampil_penilaian->nilai_sub_kriteria;
-												echo $gap;
-											 ?>
-							</td>
-							<?php } ?>
-						</tr>
-						<tr>
-							<td>A2</td>
-							<?php foreach ($penilaian_A2 as $tampil_penilaian) { ?>
-							<td scope="row">
-								<?php 
-												$gap = $tampil_penilaian->skor - $tampil_penilaian->nilai_sub_kriteria;
-												echo $gap;
-											 ?>
-							</td>
-							<?php } ?>
-						<tr>
-							<td>A3</td>
-							<?php foreach ($penilaian_A3 as $tampil_penilaian) { ?>
-							<td scope="row">
-								<?php 
-												$gap = $tampil_penilaian->skor - $tampil_penilaian->nilai_sub_kriteria;
-												echo $gap;
-											 ?>
-							</td>
-							<?php } ?>
-						</tr>
-						<tr class='bg-success text-light'>
-							<td colspan='9'>Pengelompokan</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td>NSF</td>
-							<td>NCF</td>
-							<td>NSF</td>
-							<td>NCF</td>
-							<td>NSF</td>
-							<td>NCF</td>
-							<td>NSF</td>
-							<td>NCF</td>
-						</tr>
-						<tr>
-							<td>A1</td>
-							<?php foreach ($penilaian_A1 as $tampil_penilaian) { ?>
-							<td scope="row">
-								<?php 
-												$gap = $tampil_penilaian->skor - $tampil_penilaian->nilai_sub_kriteria;
-												$cf = bobot_gap($gap) / $hitung_jarak_cf1;
-												echo $cf;
-											 ?>
-							</td>
-							<?php } ?>
-						</tr>
-						<tr>
-							<td>A2</td>
-							<?php foreach ($penilaian_A2 as $tampil_penilaian) { ?>
-							<td scope="row">
-								<?php 
-												$gap = $tampil_penilaian->skor - $tampil_penilaian->nilai_sub_kriteria;
-												$cf = bobot_gap($gap) / $hitung_jarak_cf1;
-												echo $cf;
-											 ?>
-							</td>
-							<?php } ?>
-						<tr>
-							<td>A3</td>
-							<?php foreach ($penilaian_A3 as $tampil_penilaian) { ?>
-							<td scope="row">
-								<?php 
-												$gap = $tampil_penilaian->skor - $tampil_penilaian->nilai_sub_kriteria;
-												$cf = bobot_gap($gap) / $hitung_jarak_cf1;
-												echo $cf;
-											 ?>
-							</td>
-							<?php } ?>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
+<div class="card mb-3">
+	<div class="card-header">
+		<i class="fas fa-table"></i>
+		Perhitungan Nilai NFC & NFS
 	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered table-sm table-striped table-hover" width="100%" cellspacing="0">
+				<thead class="thead-inverse text-center">
+					<tr>
 
-</div>
-
-
-
-<div class="col-md-6">
-	<div class="card mb-3">
-		<div class="card-header">
-			<i class="fas fa-table"></i>
-			Nilai Total N(j,l,t,i)
-		</div>
-
-		<div class="card-body">
-
-
-			<table class="table table-bordered table-sm table-responsive">
-				<thead class="thead-inverse">
-					<tr class='bg-primary text-light'>
 						<th class="">Kode Alternatif</th>
-						<th class="" colspan='2'>Lokasi</th>
-						<th class="" colspan='2'>Transportasi</th>
-						<th class="" colspan='2'>Infrastruktur</th>
-						<th class="" colspan='2'>Jarak</th>
-					</tr>
-					<tr class='bg-light'>
-						<th></th>
-						<th>AK</th>
-						<th>AJ</th>
-						<th>BMM</th>
-						<th>BT</th>
-						<th>TP</th>
-						<th>KDJP</th>
-						<th>JL</th>
-						<th>JT</th>
+						<?php 
+$queryAspek = $this->db->query("
+							select tb_aspek.id_aspek, 
+							COUNT(tb_sub_kriteria.id_aspek) AS jumlah_sub,
+							tb_aspek.nama_aspek 
+							from tb_aspek LEFT JOIN 
+							tb_sub_kriteria ON 
+							tb_aspek.id_aspek = tb_sub_kriteria.id_aspek
+							GROUP BY tb_aspek.id_aspek
+							order by id_aspek asc
+							"); 
 
+foreach ($queryAspek->result() as $tampilAspek) {
+?>
+						<th class="" colspan='<?php echo $tampilAspek->jumlah_sub; ?>'>
+							<?php echo $tampilAspek->nama_aspek; ?>
+						</th>
+						<?php
+} 
+?>
 					</tr>
-					<tr class='bg-light'>
-						<th></th>
-						<th>CF</th>
-						<th>SF</th>
-						<th>CF</th>
-						<th>SF</th>
-						<th>CF</th>
-						<th>SF</th>
-						<th>SF</th>
-						<th>CF</th>
+					<tr>
+						<th> </th>
+						<?php 
+$querySubKriteria = $this->db->query("
+							select id_sub_kriteria,
+							id_aspek, 
+							nama_sub_kriteria,
+							keterangan 
+							from tb_sub_kriteria 
+							order by id_aspek,keterangan asc"); 
 
+foreach ($querySubKriteria->result() as $tampilSubKriteria) {
+?>
+						<th class="">
+							<?php echo $tampilSubKriteria->nama_sub_kriteria; ?><br>
+							<?php echo $tampilSubKriteria->keterangan; ?><br>
+						</th>
+						<?php
+} 
+?>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class='bg-success text-light'>
-						<td colspan='9'>Pengelompokan</td>
-					</tr>
-					<tr>
-						<td>A1</td>
-						<?php foreach ($penilaian_A1 as $tampil_penilaian) { ?>
-						<td scope="row">
-							<?php 
-												$gap = $tampil_penilaian->skor - $tampil_penilaian->nilai_sub_kriteria;
-												$cf = bobot_gap($gap) / $hitung_jarak_cf1;
-												echo $cf;
-											 ?>
+				<?php 
+                                            $queryAlternatif = $this->db->query("
+                                                                                select id_alternatif,
+                                                                                kode_alternatif 
+                                                                                from tb_alternatif"); 
+
+                                            foreach ($queryAlternatif->result() as $tampilAlternatif) {
+                                        ?>
+					<tr class="text-center">
+						<td>
+							<?php echo $tampilAlternatif->kode_alternatif ?>
+						</td>
+
+						<?php 
+                                                $queryPenilaian = $this->db->query("
+                                                                                    select tb1.id_alternatif as id_alternatif, 
+																					tb1.id_sub_kriteria as id_sub_kriteria,
+																					tb2.nama_sub_kriteria as nama_sub_kriteria,
+																					tb2.nilai_sub_kriteria as nilai_sub_kriteria,
+																					tb3.id_aspek as id_aspek,
+                                                                                    tb1.skor as skor
+																					from tb_penilaian tb1
+																					left join tb_sub_kriteria tb2 ON
+																					tb1.id_sub_kriteria = tb2.id_sub_kriteria 
+																					left join tb_aspek tb3 ON
+																					tb2.id_aspek = tb3.id_aspek
+																					where id_alternatif = '$tampilAlternatif->id_alternatif'
+																					order by tb2.id_aspek, tb2.keterangan ASC");
+                                                foreach ($queryPenilaian->result() as $tampilPenilaian) {
+                                            ?>
+						<td>
+							<?php
+							$gap = $tampilPenilaian->skor - $tampilPenilaian->nilai_sub_kriteria;  
+							echo bobot_gap($gap);
+							?>
+							<br>
 						</td>
 						<?php } ?>
 					</tr>
-					<tr class='bg-danger text-light'>
-						<td>Nilai Total N(j,l,t,i)</td>
-						<td colspan='2'>
-							<?php 
-											$gap_ak = $x_ak->skor - $x_ak->nilai_sub_kriteria;
-											$cf_ak = bobot_gap($gap_ak) / $hitung_jarak_cf1;
+					<?php
+                                            } 
+										?>
+					<tr class='bg-success'>
+						<td class='text-center'> <strong>Jumlah Item Factor</strong> </td>
+						<?php 
+                                            $querySubKriteria = $this->db->query("
+											SELECT id_aspek, 
+											keterangan, 
+											COUNT(id_aspek) AS jumlah_item 
+											FROM tb_sub_kriteria 
+											GROUP BY id_aspek, keterangan
+											ORDER BY id_aspek, keterangan"); 
 
-											$gap_aj = $x_aj->skor - $x_aj->nilai_sub_kriteria;
-											$cf_aj = bobot_gap($gap_aj) / $hitung_jarak_cf1;
-
-											$n = (($bobot_ak->bobot/100)*$cf_ak)*(($bobot_aj->bobot/100)*$cf_aj);
-											echo round($n,2);
-											
-											?>
+                                            foreach ($querySubKriteria->result() as $tampilSubKriteria) {
+                                        ?>
+						<td class="text-center" colspan='
+								<?php echo $tampilSubKriteria->jumlah_item; ?></strong>'>
+							<strong>
+								<?php echo $tampilSubKriteria->jumlah_item; ?></strong>
 						</td>
-						<td colspan='2'>
-							<?php 
-											$gap_bmm = $x_bmm->skor - $x_bmm->nilai_sub_kriteria;
-											$cf_bmm = bobot_gap($gap_bmm) / $hitung_jarak_cf1;
-
-											$gap_bt = $x_bt->skor - $x_bt->nilai_sub_kriteria;
-											$cf_bt = bobot_gap($gap_bt) / $hitung_jarak_cf1;
-
-											$n = (($bobot_bmm->bobot/100)*$cf_bmm)*(($bobot_bt->bobot/100)*$cf_bt);
-
-											echo round($n,2);
-											
-											?>
-						</td>
-						<td colspan='2'>
-							<?php 
-											$gap1 = $x_tp->skor - $x_tp->nilai_sub_kriteria;
-											$cf1 = bobot_gap($gap1) / $hitung_jarak_cf1;
-
-											$gap2 = $x_kdjp->skor - $x_kdjp->nilai_sub_kriteria;
-											$cf2 = bobot_gap($gap2) / $hitung_jarak_cf1;
-
-											$n = (($bobot_tp->bobot/100)*$cf1)*(($bobot_kdjp->bobot/100)*$cf2);
-
-											echo round($n,2);
-											
-											?>
-						</td>
-						<td colspan='2'>
-							<?php 
-											$gap1 = $x_jl->skor - $x_jl->nilai_sub_kriteria;
-											$cf1 = bobot_gap($gap1) / $hitung_jarak_cf1;
-
-											$gap2 = $x_jt->skor - $x_jt->nilai_sub_kriteria;
-											$cf2 = bobot_gap($gap2) / $hitung_jarak_cf1;
-
-											$n = (($bobot_jl->bobot/100)*$cf1)*(($bobot_jt->bobot/100)*$cf2);
-
-											echo round($n,2);
-											
-											?>
-						</td>
-
+						<?php
+                                            } 
+                                         ?>
 					</tr>
-					<tr>
-						<td>A2</td>
-						<?php foreach ($penilaian_A2 as $tampil_penilaian) { ?>
-						<td scope="row">
-							<?php 
-												$gap = $tampil_penilaian->skor - $tampil_penilaian->nilai_sub_kriteria;
-												$cf = bobot_gap($gap) / $hitung_jarak_cf1;
-												echo $cf;
-											 ?>
+
+					<?php 
+                                            $queryAlternatif = $this->db->query("
+                                                                                select id_alternatif,
+                                                                                kode_alternatif 
+                                                                                from tb_alternatif"); 
+
+                                            foreach ($queryAlternatif->result() as $tampilAlternatif) {
+                                        ?>
+					<tr class="text-center">
+						<td>
+							<?php echo $tampilAlternatif->kode_alternatif ?>
 						</td>
-						<?php } ?>
-					<tr class='bg-danger text-light'>
-						<td>Nilai Total N(j,l,t,i)</td>
-						<td colspan='2'>
-							<?php 
-											$gap1 = $x_ak2->skor - $x_ak2->nilai_sub_kriteria;
-											$cf1 = bobot_gap($gap1) / $hitung_jarak_cf1;
 
-											$gap2 = $x_aj2->skor - $x_aj2->nilai_sub_kriteria;
-											$cf2 = bobot_gap($gap2) / $hitung_jarak_cf1;
+						<?php 
+                                                $queryPenilaian = $this->db->query("
+												select tb1.id_alternatif as id_alternatif, 
+												tb1.id_sub_kriteria as id_sub_kriteria,
+												tb2.nama_sub_kriteria as nama_sub_kriteria,
+												tb2.nilai_sub_kriteria as nilai_sub_kriteria,
+												tb2.keterangan as keterangan,
+												tb3.id_aspek as id_aspek,
+												tb1.skor as skor
+												from tb_penilaian tb1
+												left join tb_sub_kriteria tb2 ON
+												tb1.id_sub_kriteria = tb2.id_sub_kriteria 
+												left join tb_aspek tb3 ON
+												tb2.id_aspek = tb3.id_aspek
+												where id_alternatif = '$tampilAlternatif->id_alternatif'
+												order by tb2.id_aspek, tb2.keterangan ASC");
 
-											$n = (($bobot_ak->bobot/100)*$cf1)*(($bobot_aj->bobot/100)*$cf2);
-											echo round($n,2);
-											
-											?>
-						</td>
-						<td colspan='2'>
-							<?php 
-											$gap1 = $x_bmm2->skor - $x_bmm2->nilai_sub_kriteria;
-											$cf1 = bobot_gap($gap1) / $hitung_jarak_cf1;
+                                                foreach ($queryPenilaian->result() as $tampilPenilaian) {
 
-											$gap2 = $x_bt2->skor - $x_bt2->nilai_sub_kriteria;
-											$cf2 = bobot_gap($gap2) / $hitung_jarak_cf1;
+													$queryJumlahNilai = $this->db->query("
+													select tb1.id_alternatif as id_alternatif, 
+													tb1.id_sub_kriteria as id_sub_kriteria,
+													tb2.nama_sub_kriteria as nama_sub_kriteria,
+													tb2.nilai_sub_kriteria as nilai_sub_kriteria,
+													tb3.id_aspek as id_aspek,
+													tb1.skor as skor
+													from tb_penilaian tb1
+													left join tb_sub_kriteria tb2 ON
+													tb1.id_sub_kriteria = tb2.id_sub_kriteria 
+													left join tb_aspek tb3 ON
+													tb2.id_aspek = tb3.id_aspek
+													where tb1.id_alternatif = '$tampilPenilaian->id_alternatif'
+													AND tb3.id_aspek = '$tampilPenilaian->id_aspek'
+													AND tb2.keterangan = '$tampilPenilaian->keterangan'
+													order by tb2.id_aspek, tb2.keterangan ASC
+													");
 
-                                            $n = (($bobot_bmm->bobot/100)*$cf1)*(($bobot_bt->bobot/100)*$cf2);
-                                            echo $cf1;
-                                            echo $gap2;
-											echo round($n,2);
-											
-											?>
-						</td>
-						<td colspan='2'>
-							<?php 
-											$gap1 = $x_tp2->skor - $x_tp2->nilai_sub_kriteria;
-											$cf1 = bobot_gap($gap1) / $hitung_jarak_cf1;
-
-											$gap2 = $x_kdjp2->skor - $x_kdjp2->nilai_sub_kriteria;
-											$cf2 = bobot_gap($gap2) / $hitung_jarak_cf1;
-
-											$n = (($bobot_tp->bobot/100)*$cf1)*(($bobot_kdjp->bobot/100)*$cf2);
-											echo round($n,2);
-											?>
-						</td>
-						<td colspan='2'>
-							<?php 
-											$gap1 = $x_jl2->skor - $x_jl2->nilai_sub_kriteria;
-											$cf1 = bobot_gap($gap1) / $hitung_jarak_cf1;
-
-											$gap2 = $x_jt2->skor - $x_jt2->nilai_sub_kriteria;
-											$cf2 = bobot_gap($gap2) / $hitung_jarak_cf1;
-
-											$n = (($bobot_jl->bobot/100)*$cf1)*(($bobot_jt->bobot/100)*$cf2);
-
-											echo round($n,2);
-											
-											?>
-						</td>
-					</tr>
-					<tr>
-						<td>A3</td>
-						<?php foreach ($penilaian_A3 as $tampil_penilaian) { ?>
-						<td scope="row">
-							<?php 
-												$gap = $tampil_penilaian->skor - $tampil_penilaian->nilai_sub_kriteria;
-												$cf = bobot_gap($gap) / $hitung_jarak_cf1;
-												echo $cf;
-											 ?>
+													
+                                            ?>
+						<td>
+							<?php
+							$N = 0;
+							$jumlahitem = 0;
+							foreach ($queryJumlahNilai->result() as $jumlahNilai) {
+								$gap = $jumlahNilai->skor - $jumlahNilai->nilai_sub_kriteria;  
+								$bobot = bobot_gap($gap);
+								$N = $bobot + $N;
+								++$jumlahitem;
+							}
+							$NF = $N / $jumlahitem;
+							echo  $NF;
+							?>
 						</td>
 						<?php } ?>
 					</tr>
-					<tr class='bg-danger text-light'>
-						<td>Nilai Total N(j,l,t,i)</td>
-						<td colspan='2'>
-							<?php 
-											$gap1 = $x_ak3->skor - $x_ak3->nilai_sub_kriteria;
-											$cf1 = bobot_gap($gap1) / $hitung_jarak_cf1;
-
-											$gap2 = $x_aj3->skor - $x_aj3->nilai_sub_kriteria;
-											$cf2 = bobot_gap($gap2) / $hitung_jarak_cf1;
-
-											$n = (($bobot_ak->bobot/100)*$cf1)*(($bobot_aj->bobot/100)*$cf2);
-											echo round($n,2);
-											
-											?>
-						</td>
-						<td colspan='2'>
-							<?php 
-											$gap1 = $x_bmm3->skor - $x_bmm3->nilai_sub_kriteria;
-											$cf1 = bobot_gap($gap1) / $hitung_jarak_cf1;
-
-											$gap2 = $x_bt3->skor - $x_bt3->nilai_sub_kriteria;
-											$cf2 = bobot_gap($gap2) / $hitung_jarak_cf1;
-
-											$n = (($bobot_bmm->bobot/100)*$cf1)*(($bobot_bt->bobot/100)*$cf2);
-											echo round($n,2);
-											
-											?>
-						</td>
-						<td colspan='2'>
-							<?php 
-											$gap1 = $x_tp3->skor - $x_tp3->nilai_sub_kriteria;
-											$cf1 = bobot_gap($gap1) / $hitung_jarak_cf1;
-
-											$gap2 = $x_kdjp3->skor - $x_kdjp3->nilai_sub_kriteria;
-											$cf2 = bobot_gap($gap2) / $hitung_jarak_cf1;
-
-											$n = (($bobot_tp->bobot/100)*$cf1)*(($bobot_kdjp->bobot/100)*$cf2);
-											echo round($n,2);
-											?>
-						</td>
-						<td colspan='2'>
-							<?php 
-											$gap1 = $x_jl3->skor - $x_jl3->nilai_sub_kriteria;
-											$cf1 = bobot_gap($gap1) / $hitung_jarak_cf1;
-
-											$gap2 = $x_jt3->skor - $x_jt3->nilai_sub_kriteria;
-											$cf2 = bobot_gap($gap2) / $hitung_jarak_cf1;
-
-											$n = (($bobot_jl->bobot/100)*$cf1)*(($bobot_jt->bobot/100)*$cf2);
-
-											echo round($n,2);
-											
-											?>
-						</td>
-					</tr>
+					<?php
+                                            } 
+										?>
 				</tbody>
 			</table>
 		</div>
